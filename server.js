@@ -19,7 +19,7 @@ server.get(/^\/panel.*/, (req,res) =>{
   if(fs.existsSync(filePath)){
     res.sendFile(filePath);
   } else {
-    res.sendFile(path.join(__dirname+'/build/index.html'));
+    res.sendFile(path.join(__dirname+'/build/front/index.html'));
   }
 });
 
