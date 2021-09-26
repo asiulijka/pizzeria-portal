@@ -11,7 +11,7 @@ import TableEvent from './components/views/Tables/TableEvent';
 import TableNewEvent from './components/views/Tables/TableNewEvent';
 import Waiter from './components/views/Waiter/Waiter';
 import WaiterNewOrder from './components/views/Waiter/WaiterNewOrder';
-import WaiterOrder from './components/views/Waiter/WaiterOrder';
+import WaiterOrderView from './components/views/Waiter/WaiterOrderView';
 import Kitchen from './components/views/Kitchen/Kitchen';
 
 import { StylesProvider } from '@mui/styles';
@@ -45,7 +45,7 @@ function App() {
 
               <Route exact path={process.env.PUBLIC_URL + '/waiter'} component={Waiter} />
               <Route exact path={process.env.PUBLIC_URL + '/waiter/order/new'} component={WaiterNewOrder} />
-              <Route exact path={process.env.PUBLIC_URL + '/waiter/order/:id'} component={WaiterOrder} />
+              <Route exact path={process.env.PUBLIC_URL + '/waiter/order/:id'} component={WaiterOrderView} />
 
               <Route exact path={process.env.PUBLIC_URL + '/kitchen'} component={Kitchen} />
             </Switch>
