@@ -6,7 +6,7 @@
 
 # Logowanie
 
-- `/login'
+- `/login`
   - pola na login i hasło
   - guzik do zalogowania (link do dashboardu)
 

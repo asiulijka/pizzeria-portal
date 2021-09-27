@@ -13,15 +13,31 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import TextField from '@mui/material/TextField';
+import DatePicker from '@mui/lab/DatePicker';
+import TimePicker from '@mui/lab/TimePicker';
+
+import { green } from '@mui/material/colors';
 
 
 const demoContent = [
-  {date: '2021-09-26', hour: '12:30', table: 1, repeat: false, duration: 4, type: 'event', id: 'E123' },
-  {date: '2021-09-26', hour: '16:00', table: 3, repeat: 'daily', duration: 2, type: 'event', id: 'E234' },
-  {date: '2021-09-26', hour: '12:00', table: 3, repeat: 'daily', duration: 2, type: 'event', id: 'E345' },
-  {date: '2021-09-26', hour: '18:30', table: 2, repeat: 'daily', duration: 3, type: 'event', id: 'E456' },
-  {date: '2021-09-26', hour: '16:00', table: 1, repeat: false, duration: 3, type: 'booking', id: 'B123' },
+  {date: '2021-09-27', hour: '12:30', table: 1, repeat: false, duration: 4, type: 'event', id: 'E123' },
+  {date: '2021-09-27', hour: '16:00', table: 3, repeat: 'daily', duration: 2, type: 'event', id: 'E234' },
+  {date: '2021-09-27', hour: '12:00', table: 3, repeat: 'daily', duration: 2, type: 'event', id: 'E345' },
+  {date: '2021-09-27', hour: '18:30', table: 2, repeat: 'daily', duration: 3, type: 'event', id: 'E456' },
+  {date: '2021-09-27', hour: '16:00', table: 1, repeat: false, duration: 3, type: 'booking', id: 'B123' },
 ];
+
+const tablesList = [1, 2, 3];
+
+const produceHoursList = () => {
+  let start = new Date(new Date().setHours(12, 0, 0, 0));
+  let timesList = [start.toLocaleTimeString('en-GB').slice(0, -3)];
+  for (let i=0;i<23;i++){
+    start.setMinutes(start.getMinutes()+30);
+    timesList.push(start.toLocaleTimeString('en-GB').slice(0, -3));
+  }
+  return timesList;
+};
 
 const renderActions = status => {
 
@@ -34,13 +50,21 @@ const Tables = () => {
   return (
     <Paper className={styles.component}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DateTimePicker
-          renderInput={(props) => <TextField {...props} />}
-          label="Choose date and time"
+        <DatePicker
+          label="Choose date"
           value={value}
           onChange={(newValue) => {
             setValue(newValue);
           }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+        <TimePicker
+          label="Choose time"
+          value={value}
+          onChange={(newValue) => {
+            setValue(newValue);
+          }}
+          renderInput={(params) => <TextField {...params} />}
         />
       </LocalizationProvider>
       <Table>
@@ -53,22 +77,29 @@ const Tables = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {demoContent.map(row => (
-            <TableRow key={row.date}>
+          {produceHoursList().map(hour => (
+            <TableRow key={hour} hover="true">
               <TableCell component="th" scope="row">
-                {row.hour}
+                {hour}
               </TableCell>
-              <TableCell>
-                <Button to={`${process.env.PUBLIC_URL}/tables/${row.type}`}>
-                  {renderActions(row.type)}
-                </Button>
-              </TableCell>
-              <TableCell>
-
-              </TableCell>
-              <TableCell>
-            
-              </TableCell>
+              {tablesList.map(tableNo => {
+                const existingBooking = demoContent.filter(el => el.hour==hour && el.table==tableNo)[0];  // dodane, zeby tego filtrowania nie powtarzac wszedzie ponizej!
+                return (
+                  <TableCell key={tableNo}>
+                    <Button component={Link} to={() => {
+                      const type = null;  // decyzja czy to bedzie booking czy event powinna wynikac pewnie z pierwszej litery ID E lub B? mozna tutaj dorzucic logike, ktora ten czlon adresu wywnioskuje po ID i tylko wkleic tu wynik
+                      return (existingBooking == undefined ? 
+                        `${process.env.PUBLIC_URL}/tables/booking/new` :  //  <-- tutaj nie wiadomo, czy booking czy event - moze 2 rozne guziki?
+                        `${process.env.PUBLIC_URL}/tables/booking/`+existingBooking.id);  //  <-- tutaj wkleic w URL event lub booking
+                    }}
+                    >
+                      {
+                        existingBooking == undefined ? 
+                          'available' : 
+                          existingBooking.type}
+                    </Button>
+                  </TableCell>);
+              })}
             </TableRow>
           ))}
         </TableBody>
