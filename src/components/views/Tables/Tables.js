@@ -90,7 +90,7 @@ const Tables = () => {
                       const type = null;  // decyzja czy to bedzie booking czy event powinna wynikac pewnie z pierwszej litery ID E lub B? mozna tutaj dorzucic logike, ktora ten czlon adresu wywnioskuje po ID i tylko wkleic tu wynik
                       return (existingBooking == undefined ? 
                         `${process.env.PUBLIC_URL}/tables/booking/new` :  //  <-- tutaj nie wiadomo, czy booking czy event - moze 2 rozne guziki?
-                        `${process.env.PUBLIC_URL}/tables/booking/`+existingBooking.id);  //  <-- tutaj wkleic w URL event lub booking
+                        `${process.env.PUBLIC_URL}/tables/`+existingBooking.type+`/`+existingBooking.id);  //  <-- tutaj wkleic w URL event lub booking
                     }}
                     >
                       {

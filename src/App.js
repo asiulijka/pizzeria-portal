@@ -5,10 +5,10 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import Login from './components/views/Login/Login';
 import Tables from './components/views/Tables/Tables';
-import TableBooking from './components/views/Tables/TableBooking';
-import TableNewBooking from './components/views/Tables/TableNewBooking';
-import TableEvent from './components/views/Tables/TableEvent';
-import TableNewEvent from './components/views/Tables/TableNewEvent';
+import BookingDetails from './components/views/Tables/BookingDetails';
+import NewBooking from './components/views/Tables/NewBooking';
+import EventDetails from './components/views/Tables/EventDetails';
+import NewEvent from './components/views/Tables/NewEvent';
 import Waiter from './components/views/Waiter/Waiter';
 import WaiterNewOrder from './components/views/Waiter/WaiterNewOrder';
 import WaiterOrderView from './components/views/Waiter/WaiterOrderView';
@@ -37,10 +37,10 @@ function App() {
               <Route exact path={process.env.PUBLIC_URL + '/login'} component={Login} />
 
               <Route exact path={process.env.PUBLIC_URL + '/tables'} component={Tables} />
-              <Route exact path={process.env.PUBLIC_URL + '/tables/booking/new'} component={TableNewBooking} />
-              <Route exact path={process.env.PUBLIC_URL + '/tables/booking/:id'} component={TableBooking} />
-              <Route exact path={process.env.PUBLIC_URL + '/tables/events/new'} component={TableNewEvent} />
-              <Route exact path={process.env.PUBLIC_URL + '/tables/events/:id'} component={TableEvent} />
+              <Route exact path={process.env.PUBLIC_URL + '/tables/booking/new'} component={NewBooking} />
+              <Route exact path={process.env.PUBLIC_URL + '/tables/booking/:id'} component={BookingDetails} />
+              <Route exact path={process.env.PUBLIC_URL + '/tables/events/new'} component={NewEvent} />
+              <Route exact path={process.env.PUBLIC_URL + '/tables/events/:id'} component={EventDetails} />
               
 
               <Route exact path={process.env.PUBLIC_URL + '/waiter'} component={Waiter} />
