@@ -24,9 +24,7 @@ const TableEvent = () => {
           <TableRow>
             <TableCell component="th" scope="row">Order Number:</TableCell>
             <TableCell>{demoContent.order}</TableCell>
-            <TableCell>
-              <Button>change</Button>
-            </TableCell>
+            <TableCell />
           </TableRow>
           <TableRow>
             <TableCell component="th" scope="row">Table:</TableCell>
