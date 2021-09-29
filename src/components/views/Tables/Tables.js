@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './Tables.module.scss';
 import {Link} from 'react-router-dom';
 import Table from '@mui/material/Table';
+import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
@@ -11,12 +12,11 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
 import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker';
 import TimePicker from '@mui/lab/TimePicker';
-
-import { green } from '@mui/material/colors';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 
 const demoContent = [
@@ -39,84 +39,105 @@ const produceHoursList = () => {
   return timesList;
 };
 
-const renderActions = status => {
-
-};
-
-
 const Tables = () => {
   const [value, setValue] = React.useState(null);
 
+  // for Available menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <Paper className={styles.component}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          label="Choose date"
-          value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
-          }}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <TimePicker
-          label="Choose time"
-          value={value}
-          onChange={(newValue) => {
-            setValue(newValue);
-          }}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Time</TableCell>
-            <TableCell>Table-1</TableCell>
-            <TableCell>Table-2</TableCell>
-            <TableCell>Table-3</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {produceHoursList().map(hour => (
-            <TableRow key={hour} hover="true">
-              <TableCell component="th" scope="row">
-                {hour}
-              </TableCell>
-              {tablesList.map(tableNo => {
-                const existingBooking = demoContent.filter(el => el.hour==hour && el.table==tableNo)[0];  // dodane, zeby tego filtrowania nie powtarzac wszedzie ponizej!
-                return (
-                  <TableCell key={tableNo}>
-                    <Button component={Link} to={() => {
-                      const type = null;  // decyzja czy to bedzie booking czy event powinna wynikac pewnie z pierwszej litery ID E lub B? mozna tutaj dorzucic logike, ktora ten czlon adresu wywnioskuje po ID i tylko wkleic tu wynik
-                      return (existingBooking == undefined ? 
-                        `${process.env.PUBLIC_URL}/tables/booking/new` :  //  <-- tutaj nie wiadomo, czy booking czy event - moze 2 rozne guziki?
-                        `${process.env.PUBLIC_URL}/tables/`+existingBooking.type+`/`+existingBooking.id);  //  <-- tutaj wkleic w URL event lub booking
-                    }}
-                    >
-                      {
-                        existingBooking == undefined ? 
-                          'available' : 
-                          existingBooking.type}
-                    </Button>
-                  </TableCell>);
-              })}
+    <Container maxWidth='md' sx={{ mt: 2 }}>
+      <Paper className={styles.component}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label="Choose date"
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+          <TimePicker
+            label="Choose time"
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        <Table size="small" sx={{ mt: 2 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Time</TableCell>
+              <TableCell align="center">Table-1</TableCell>
+              <TableCell align="center">Table-2</TableCell>
+              <TableCell align="center">Table-3</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+          </TableHead>
+          <TableBody>
+            {produceHoursList().map(hour => (
+              <TableRow key={hour} hover="true">
+                <TableCell component="th" scope="row" align="center">
+                  {hour}
+                </TableCell>
+                {tablesList.map(tableNo => {
+                  const existingBooking = demoContent.filter(el => el.hour==hour && el.table==tableNo)[0];  // dodane, zeby tego filtrowania nie powtarzac wszedzie ponizej!
+                  if (existingBooking == undefined) {
+                    return (
+                      <TableCell align="center">
+                        <Button
+                          id="basic-button"
+                          aria-controls="basic-menu"
+                          aria-haspopup="true"
+                          aria-expanded={open ? 'true' : undefined}
+                          onClick={handleClick}
+                          color="success"
+                        >
+                          Available
+                        </Button>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                          }}
+                        >
+                          <MenuItem component={Link} to={`${process.env.PUBLIC_URL}/tables/event/new`}>New Event</MenuItem>
+                          <MenuItem component={Link} to={`${process.env.PUBLIC_URL}/tables/booking/new`}>New Booking</MenuItem>
+                        </Menu>
+                      </TableCell>
+                    );
+                  } else {
+                    return (
+                      <TableCell align="center">
+                        <Button 
+                          component={Link} 
+                          to={`${process.env.PUBLIC_URL}/tables/`+existingBooking.type+`/`+existingBooking.id}
+                          color="error"
+                        >
+                          {existingBooking.type}
+                        </Button>
+                      </TableCell>
+                    );
+                  }
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    </Container>
   );
 };
-
-
-// const Tables = () => (
-//   <div className={styles.component}>
-//     <h2>Tables view</h2>
-//     <Link to={`${process.env.PUBLIC_URL}/tables/booking/new`} activeClassName='active'> NewTableBooking </Link>
-//     <Link to={`${process.env.PUBLIC_URL}/tables/booking/123`} activeClassName='active'> TableBooking123 </Link>
-//     <Link to={`${process.env.PUBLIC_URL}/tables/events/new`} activeClassName='active'> NewEventsBooking </Link>
-//     <Link to={`${process.env.PUBLIC_URL}/tables/events/123`} activeClassName='active'> EventsBooking123 </Link>
-//   </div>
-// );
 
 export default Tables;

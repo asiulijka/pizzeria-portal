@@ -1,8 +1,6 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import styles from './Waiter.module.scss';
 import {Link} from 'react-router-dom';
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 
 const demoContent = [
   {id: '1', status: 'free', order: null},
@@ -26,12 +25,12 @@ const renderActions = status => {
       return (
         <>
           <Button>thinking</Button>
-          <Button>new order</Button>
+          <Button component={Link} to={`${process.env.PUBLIC_URL}/waiter/order/new`} activeClassName='active'>new order</Button>
         </>
       );
     case 'thinking':
       return (
-        <Button>new order</Button>
+        <Button component={Link} to={`${process.env.PUBLIC_URL}/waiter/order/new`} activeClassName='active'>new order</Button>
       );
     case 'ordered':
       return (
@@ -55,50 +54,42 @@ const renderActions = status => {
 };
 
 const Waiter = () => (
-  <Paper className={styles.component}>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Table</TableCell>
-          <TableCell>Status</TableCell>
-          <TableCell>Order</TableCell>
-          <TableCell>Action</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {demoContent.map(row => (
-          <TableRow key={row.id}>
-            <TableCell component="th" scope="row">
-              {row.id}
-            </TableCell>
-            <TableCell>
-              {row.status}
-            </TableCell>
-            <TableCell>
-              {row.order && (
-                <Button component={Link} to={`${process.env.PUBLIC_URL}/waiter/order/${row.order}`} activeClassName='active'>
-                  {row.order}
-                </Button>
-              )}
-            </TableCell>
-            <TableCell>
-              {renderActions(row.status)}
-            </TableCell>
+  <Container maxWidth='md' sx={{ mt: 2 }}>
+    <Paper className={styles.component}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Table</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Order</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </Paper>
+        </TableHead>
+        <TableBody>
+          {demoContent.map(row => (
+            <TableRow key={row.id}>
+              <TableCell component="th" scope="row">
+                {row.id}
+              </TableCell>
+              <TableCell>
+                {row.status}
+              </TableCell>
+              <TableCell>
+                {row.order && (
+                  <Button component={Link} to={`${process.env.PUBLIC_URL}/waiter/order/${row.order}`} activeClassName='active'>
+                    {row.order}
+                  </Button>
+                )}
+              </TableCell>
+              <TableCell>
+                {renderActions(row.status)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
+  </Container>
 );
-
-// const Waiter = () => (
-//   <div className={styles.component}>
-//     <h2>Waiter view</h2>
-//     <nav>
-//       <Link to={`${process.env.PUBLIC_URL}/waiter/order/new`} activeClassName='active'> NewOrder </Link>
-//       <Link to={`${process.env.PUBLIC_URL}/waiter/order/456`} activeClassName='active'> OrderID </Link>
-//     </nav>
-//   </div>
-// );
 
 export default Waiter;
