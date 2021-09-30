@@ -2,10 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import styles from './Waiter.module.scss';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
@@ -218,7 +214,7 @@ const NewOrder = () => {
             </Grid>
           </Grid>
         </Grid>
-        
+
       </Paper>
     </Container>
 
