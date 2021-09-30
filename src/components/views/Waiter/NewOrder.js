@@ -18,6 +18,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Divider from '@mui/material/Divider';
+import ListSubheader from '@mui/material/ListSubheader';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { Grid } from '@mui/material';
 
 // const demoContent = [
 //   {order: 123, qty: 1, name: 'Zio Stefano\'s Doughnut', sauce: null, ingredients: null, pizza_crust: null, price: '$9'},,
@@ -37,19 +41,42 @@ const NewOrder = () => {
     setTable(event.target.value);
   };
   const [value, setValue] = React.useState(null);
+
+
+
+  // Ingredients select handler
+  const [ingredientName, setingredientName] = React.useState([]);
+  const handleIngredientsChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setingredientName(
+      // On autofill we get a the stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+
   return (
     <Container maxWidth='md' sx={{ mt: 2 }}>
       <Paper className={styles.component}>
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row"><strong>NEW ORDER</strong></TableCell>
-              <TableCell />
-              <TableCell />
-            </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">Table:</TableCell>
-              <TableCell>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant='h5'>
+              NEW ORDER
+            </Typography>
+            <Divider sx={{ my: 2 }}/>
+          </Grid>
+
+          {/* Table */}
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item xs={4}>
+                <Typography>
+                  Table:
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
                 <FormControl sx={{ width: '80%'}}>
                   <InputLabel id="demo-simple-select-label">Choose Table</InputLabel>
                   <Select
@@ -64,14 +91,82 @@ const NewOrder = () => {
                     <MenuItem value={3}>Table-3</MenuItem>
                   </Select>
                 </FormControl>
-              </TableCell>
-              <TableCell>
-                <Button>change</Button>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">Ordered:</TableCell>
-              <TableCell>
+              </Grid>
+              <Grid item xs={2}>
+                <Button>Change</Button>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider sx={{ my: 2 }}/>
+          </Grid>
+
+          {/* Products */}
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item xs={4}>
+                <Typography>
+                  Products:
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl sx={{ mr: 4, minWidth: 120 }}>
+                  <InputLabel htmlFor="grouped-select">Products</InputLabel>
+                  <Select defaultValue="" id="grouped-select" label="Grouping">
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <ListSubheader>Pizzas</ListSubheader>
+                    <MenuItem value={1}>Pepperoni</MenuItem>
+                    <MenuItem value={2}>Margarita</MenuItem>
+                    <ListSubheader>Pastas</ListSubheader>
+                    <MenuItem value={3}>Bolognese</MenuItem>
+                    <MenuItem value={4}>Carbonara</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ minWidth: 120 }}>
+                  <InputLabel htmlFor="grouped-select">Ingredients</InputLabel>
+                  <Select 
+                    multiple 
+                    defaultValue="" 
+                    id="grouped-select" 
+                    label="Grouping"
+                    value={ingredientName}
+                    onChange={handleIngredientsChange}
+                    input={<OutlinedInput label="Name" />}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <ListSubheader>Sauce</ListSubheader>
+                    <MenuItem value={1}>Red</MenuItem>
+                    <MenuItem value={2}>White</MenuItem>
+                    <ListSubheader>Toppings</ListSubheader>
+                    <MenuItem value={3}>Pepperoni</MenuItem>
+                    <MenuItem value={4}>Onion</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={2}>
+                <Button>Add</Button>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider sx={{ my: 2 }}/>
+          </Grid>
+
+          {/* Ordered list */}
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item xs={4}>
+                <Typography>
+                  Ordered products:
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
                 <Accordion sx={{ width: '80%'}} key={demoContent.order}> 
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -95,18 +190,35 @@ const NewOrder = () => {
                     </Typography>
                   </AccordionDetails>
                 </Accordion>
-              </TableCell>
-              <TableCell>
-                <Button>update</Button>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">Total order value:</TableCell>
-              <TableCell>{demoContent.price}</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableBody>
-        </Table>
+              </Grid>
+              <Grid item xs={2}>
+                <Button>Update</Button>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider sx={{ my: 2 }}/>
+          </Grid>
+
+          {/* Total price */}
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item xs={4}>
+                <Typography>
+                  Total order value:
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography>
+                  {demoContent.price}
+                </Typography>
+              </Grid>
+              <Grid item xs={2}></Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        
       </Paper>
     </Container>
 
