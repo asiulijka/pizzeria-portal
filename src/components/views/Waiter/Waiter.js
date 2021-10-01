@@ -13,6 +13,7 @@ class Waiter extends React.Component {
   static propTypes = {
     tables: PropTypes.any,
     fetchTables: PropTypes.func,
+    updateTableStatus: PropTypes.func,
     loading: PropTypes.shape({
       active: PropTypes.bool,
       error: PropTypes.oneOfType([PropTypes.bool,PropTypes.string]),
@@ -24,34 +25,40 @@ class Waiter extends React.Component {
     fetchTables();
   }
 
-  renderActions(status){
-    switch (status) {
+  renderActions(tableStatus, tableId){
+    const { updateTableStatus } = this.props;
+
+    switch (tableStatus) {
       case 'free':
         return (
           <>
-            <Button>thinking</Button>
-            <Button>new order</Button>
+            <Button onClick={() => updateTableStatus(tableId)}>thinking</Button>
+            <Button onClick={() => updateTableStatus(tableId)}>new order</Button>
           </>
         );
       case 'thinking':
         return (
-          <Button>new order</Button>
+          <Button onClick={() => updateTableStatus(tableId)}>new order</Button>
+        );
+      case 'new order':
+        return (
+          <Button onClick={() => updateTableStatus(tableId)}>ordered</Button>
         );
       case 'ordered':
         return (
-          <Button>prepared</Button>
+          <Button onClick={() => updateTableStatus(tableId)}>prepared</Button>
         );
       case 'prepared':
         return (
-          <Button>delivered</Button>
+          <Button onClick={() => updateTableStatus(tableId)}>delivered</Button>
         );
       case 'delivered':
         return (
-          <Button>paid</Button>
+          <Button onClick={() => updateTableStatus(tableId)}>paid</Button>
         );
       case 'paid':
         return (
-          <Button>free</Button>
+          <Button onClick={() => updateTableStatus(tableId)}>free</Button>
         );
       default:
         return null;
@@ -103,7 +110,7 @@ class Waiter extends React.Component {
                     )}
                   </TableCell>
                   <TableCell>
-                    {this.renderActions(row.status)}
+                    {this.renderActions(row.status, row.id)}
                   </TableCell>
                 </TableRow>
               ))}

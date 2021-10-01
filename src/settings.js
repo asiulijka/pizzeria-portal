@@ -9,4 +9,5 @@ export const api = {
   dateEndParamKey: 'date_lte',
   notRepeatParam: 'repeat=false',
   repeatParam: 'repeat_ne=false',
+  orderStates: 'orderStates',
 };

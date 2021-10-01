@@ -299,5 +299,35 @@
     "status": "paid", 
     "order": 456
   }
+ ],
+ "orderStates": [
+  {
+    "id": 1,
+    "name": "free"
+  },
+  {
+    "id": 2,
+    "name": "thinking"
+  },
+  {
+    "id": 3,
+    "name": "new order"
+  },
+  {
+    "id": 4,
+    "name": "ordered"
+  },
+  {
+    "id": 5,
+    "name": "prepared"
+  },
+  {
+    "id": 6,
+    "name": "delivered"
+  },
+  {
+    "id": 7,
+    "name": "paid"
+  }
  ]
 }
